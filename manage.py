@@ -5,7 +5,7 @@ import sys
 
 
 def main():
-    """Run administrative tasks."""
+    """Uruchamianie zadań administracyjnych."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'budget_manager.settings')
     try:
         from django.core.management import execute_from_command_line

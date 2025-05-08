@@ -1,0 +1,22 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+  <h1>Twoje transakcje</h1>
+  <a href="{% url 'dodaj_transakcje' %}" class="btn btn-primary">Dodaj nową transakcję</a>
+  
+  <ul class="list-group mt-3">
+    {% for t in transakcje %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <strong>{{ t.data|date:"d M Y" }}</strong> – {{ t.tytul }} – {{ t.kwota }} zł ({{ t.typ }})
+        </div>
+        <div>
+          <a href="{% url 'edytuj_transakcje' pk=t.pk %}" class="btn btn-warning btn-sm">Edytuj</a>
+          <a href="{% url 'usun_transakcje' pk=t.pk %}" class="btn btn-danger btn-sm" onclick="return confirm('Na pewno chcesz usunąć tę transakcję?');">Usuń</a>
+        </div>
+      </li>
+    {% empty %}
+      <li class="list-group-item">Brak transakcji.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
