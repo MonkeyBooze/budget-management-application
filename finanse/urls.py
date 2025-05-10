@@ -1,8 +1,13 @@
-from django.urls import path
-from .views import rejestracja
-from .views import dodaj_transakcje
+from django.contrib import admin
+from django.urls import path, include
+from django.contrib.auth import views as auth_views
+from finanse import views as finanse_views
 
 urlpatterns = [
-    path("rejestracja/", rejestracja, name="rejestracja"),
-    path("dodaj/", dodaj_transakcje, name="dodaj_transakcje"),
-]
+    path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('rejestracja/', finanse_views.rejestracja, name='rejestracja'),
+    path('dodaj/', finanse_views.dodaj_transakcje, name='dodaj_transakcje'),
+    path('', finanse_views.dashboard, name='dashboard'),
+    path('lista/', finanse_views.lista_transakcji, name='lista_transakcji'),
+    ]

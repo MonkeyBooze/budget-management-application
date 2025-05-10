@@ -1,0 +1,72 @@
+{% extends 'finanse/base_generic.html' %}
+
+{% block content %}
+<h2>Dashboard finansowy</h2>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h5 class="card-title">Przychody</h5>
+                <h2 class="card-text">{{ przychody_suma }} PLN</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-danger text-white">
+            <div class="card-body">
+                <h5 class="card-title">Wydatki</h5>
+                <h2 class="card-text">{{ wydatki_suma }} PLN</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card {% if saldo >= 0 %}bg-primary{% else %}bg-danger{% endif %} text-white">
+            <div class="card-body">
+                <h5 class="card-title">Saldo</h5>
+                <h2 class="card-text">{{ saldo }} PLN</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header d-flex justify-content-between">
+        <h5>Ostatnie transakcje</h5>
+        <a href="{% url 'dodaj_transakcje' %}" class="btn btn-primary">Dodaj transakcję</a>
+    </div>
+    <div class="card-body">
+        {% if transakcje %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Opis</th>
+                        <th>Kategoria</th>
+                        <th>Typ</th>
+                        <th>Kwota</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transakcja in transakcje %}
+                        <tr>
+                            <td>{{ transakcja.data|date:"d.m.Y H:i" }}</td>
+                            <td>{{ transakcja.opis|default:"-" }}</td>
+                            <td>{{ transakcja.kategoria|default:"-" }}</td>
+                            <td>{{ transakcja.get_typ_display }}</td>
+                            <td class="{% if transakcja.typ == 'przychód' %}text-success{% else %}text-danger{% endif %}">
+                                {{ transakcja.kwota }} PLN
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="text-center">
+                <a href="{% url 'lista_transakcji' %}" class="btn btn-outline-primary">Zobacz wszystkie transakcje</a>
+            </div>
+        {% else %}
+            <p class="text-center">Brak transakcji. <a href="{% url 'dodaj_transakcje' %}">Dodaj swoją pierwszą transakcję!</a></p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
