@@ -3,7 +3,8 @@ from django.contrib.auth.models import User
 
 class Kategoria(models.Model):
     nazwa = models.CharField(max_length=50, unique=True)
-
+    budzet = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)  # Nowe pole
+                                 
     def __str__(self):
         return self.nazwa
 

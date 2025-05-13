@@ -3,6 +3,14 @@
 {% block content %}
 <h2>Dashboard finansowy</h2>
 
+{% if przekroczenia %}
+    <div class="alert alert-danger">
+        {% for ostrzezenie in przekroczenia %}
+            <p>{{ ostrzezenie }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+
 <div class="row mt-4">
     <div class="col-md-4">
         <div class="card bg-success text-white">
@@ -69,4 +77,32 @@
         {% endif %}
     </div>
 </div>
+
+<h3 class="mt-4">Wykres wydatków</h3>
+<canvas id="wydatkiChart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var ctx = document.getElementById('wydatkiChart').getContext('2d');
+
+        var nazwyKategorii = JSON.parse('{{ nazwy_kategorii|safe }}');  // Konwersja na JSON
+        var wartosciKategorii = JSON.parse('{{ wartosci_kategorii|safe }}');  // Konwersja na JSON
+
+        var wydatkiChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: nazwyKategorii,
+                datasets: [{
+                    label: 'Wydatki',
+                    data: wartosciKategorii,
+                    backgroundColor: ['red', 'blue', 'green', 'yellow', 'purple'],
+                }]
+            }
+        });
+    });
+</script>
+
+<a href="{% url 'eksport_csv' %}" class="btn btn-outline-secondary">Eksportuj do CSV</a>
+
 {% endblock %}

@@ -1,0 +1,6 @@
+<h2>Importuj transakcje</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="csv_file" accept=".csv">
+    <button type="submit" class="btn btn-primary">Importuj</button>
+</form>
