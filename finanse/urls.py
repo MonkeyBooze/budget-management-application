@@ -10,4 +10,7 @@ urlpatterns = [
     path('dodaj/', finanse_views.dodaj_transakcje, name='dodaj_transakcje'),
     path('', finanse_views.dashboard, name='dashboard'),
     path('lista/', finanse_views.lista_transakcji, name='lista_transakcji'),
+    path('budzet/<int:pk>/', finanse_views.edytuj_budzet, name='edytuj_budzet'),
+    path('eksport/', finanse_views.eksport_csv, name='eksport_csv'),
+    path('import/', finanse_views.import_csv, name='import_csv'),
     ]
