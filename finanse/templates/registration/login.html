@@ -1,11 +1,41 @@
-<!-- login.html -->
 {% extends 'base_generic.html' %}
 
 {% block content %}
-  <h2>Zaloguj się</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Zaloguj się</button>
-  </form>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="text-center">🔑 Zaloguj się</h2>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            {{ form.errors }}
+                        </div>
+                    {% endif %}
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.username.id_for_label }}" class="form-label">Nazwa użytkownika:</label>
+                        {{ form.username }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="{{ form.password.id_for_label }}" class="form-label">Hasło:</label>
+                        {{ form.password }}
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Zaloguj się</button>
+                    </div>
+                </form>
+                
+                <div class="text-center mt-3">
+                    <p>Nie masz konta? <a href="{% url 'rejestracja' %}">Zarejestruj się</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

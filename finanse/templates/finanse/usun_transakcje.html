@@ -1,0 +1,31 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h2>🗑️ Usuń transakcję</h2>
+            </div>
+            <div class="card-body">
+                <p>Czy na pewno chcesz usunąć tę transakcję?</p>
+
+                <div class="alert alert-info">
+                    <strong>{{ transakcja.typ|title }}:</strong> {{ transakcja.kwota }} zł<br>
+                    <strong>Kategoria:</strong> {{ transakcja.kategoria|default:"Brak" }}<br>
+                    <strong>Data:</strong> {{ transakcja.data|date:"d.m.Y H:i" }}<br>
+                    {% if transakcja.opis %}
+                        <strong>Opis:</strong> {{ transakcja.opis }}
+                    {% endif %}
+                </div>
+
+                <form method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">🗑️ Tak, usuń</button>
+                </form>
+                <a href="{% url 'lista_transakcji' %}" class="btn btn-secondary">Anuluj</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

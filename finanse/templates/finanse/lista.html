@@ -1,22 +1,94 @@
 {% extends 'base_generic.html' %}
 
 {% block content %}
-  <h1>Twoje transakcje</h1>
-  <a href="{% url 'dodaj_transakcje' %}" class="btn btn-primary">Dodaj nową transakcję</a>
-  
-  <ul class="list-group mt-3">
-    {% for t in transakcje %}
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        <div>
-          <strong>{{ t.data|date:"d M Y" }}</strong> – {{ t.tytul }} – {{ t.kwota }} zł ({{ t.typ }})
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>💰 Twoje transakcje</h1>
+    <a href="{% url 'dodaj_transakcje' %}" class="btn btn-primary">
+        ➕ Dodaj nową transakcję
+    </a>
+</div>
+
+{% if transakcje %}
+    <div class="row">
+        {% for t in transakcje %}
+            <div class="col-md-6 mb-3">
+                <div class="card {% if t.typ == 'przychód' %}border-success{% else %}border-danger{% endif %}">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="flex-grow-1">
+                                <h6 class="card-title mb-1">
+                                    {% if t.typ == 'przychód' %}
+                                        <span class="text-success">⬆️ +{{ t.kwota }} zł</span>
+                                    {% else %}
+                                        <span class="text-danger">⬇️ -{{ t.kwota }} zł</span>
+                                    {% endif %}
+                                </h6>
+
+                                <p class="card-text mb-1">
+                                    <small class="text-muted">📅 {{ t.data|date:"d.m.Y H:i" }}</small>
+                                </p>
+
+                                {% if t.kategoria %}
+                                    <p class="card-text mb-1">
+                                        <span class="badge bg-secondary">🏷️ {{ t.kategoria.nazwa }}</span>
+                                    </p>
+                                {% endif %}
+
+                                {% if t.opis %}
+                                    <p class="card-text mb-0">
+                                        <small>📝 {{ t.opis }}</small>
+                                    </p>
+                                {% endif %}
+                            </div>
+
+                            <div class="btn-group-vertical btn-group-sm">
+                                <a href="{% url 'edytuj_transakcje' pk=t.pk %}"
+                                   class="btn btn-outline-warning btn-sm mb-1">
+                                    ✏️ Edytuj
+                                </a>
+                                <a href="{% url 'usun_transakcje' pk=t.pk %}"
+                                   class="btn btn-outline-danger btn-sm"
+                                   onclick="return confirm('Na pewno chcesz usunąć tę transakcję?');">
+                                    🗑️ Usuń
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Podsumowanie -->
+    <div class="card mt-4 bg-light">
+        <div class="card-body">
+            <h5>📊 Podsumowanie transakcji</h5>
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <h6 class="text-success">Przychody</h6>
+                    <h4 class="text-success">+{{ suma_przychodow|floatformat:2 }} zł</h4>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="text-danger">Wydatki</h6>
+                    <h4 class="text-danger">-{{ suma_wydatkow|floatformat:2 }} zł</h4>
+                </div>
+                <div class="col-md-4">
+                    <h6>Saldo</h6>
+                    <h4 class="{% if saldo >= 0 %}text-success{% else %}text-danger{% endif %}">
+                        {{ saldo|floatformat:2 }} zł
+                    </h4>
+                </div>
+            </div>
         </div>
-        <div>
-          <a href="{% url 'edytuj_transakcje' pk=t.pk %}" class="btn btn-warning btn-sm">Edytuj</a>
-          <a href="{% url 'usun_transakcje' pk=t.pk %}" class="btn btn-danger btn-sm" onclick="return confirm('Na pewno chcesz usunąć tę transakcję?');">Usuń</a>
-        </div>
-      </li>
-    {% empty %}
-      <li class="list-group-item">Brak transakcji.</li>
-    {% endfor %}
-  </ul>
+    </div>
+
+{% else %}
+    <div class="text-center py-5">
+        <h3 class="text-muted">📭 Brak transakcji</h3>
+        <p class="text-muted">Dodaj swoją pierwszą transakcję, aby rozpocząć śledzenie budżetu!</p>
+        <a href="{% url 'dodaj_transakcje' %}" class="btn btn-primary btn-lg">
+            ➕ Dodaj pierwszą transakcję
+        </a>
+    </div>
+{% endif %}
 {% endblock %}

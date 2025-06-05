@@ -55,7 +55,7 @@ ROOT_URLCONF = 'budget_manager.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'finanse'/'templates'],  # Ścieżka do szablonów
+        'DIRS': [BASE_DIR / 'finanse' / 'templates'],  # Ścieżka do szablonów
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -101,15 +101,26 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
+# URLs dla uwierzytelniania
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
 
-LANGUAGE_CODE = 'en-us'
+# Ustawienia wiadomości
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.DEBUG: 'debug',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}
 
-TIME_ZONE = 'UTC'
+
+LANGUAGE_CODE = 'pl'           # Zmiana na polski
+TIME_ZONE = 'Europe/Warsaw'    # Zmiana na polską strefę czasową
 
 USE_I18N = True
-
 USE_TZ = True
 
 
@@ -117,6 +128,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'finanse' / 'static',  # Folder na statyczne pliki
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

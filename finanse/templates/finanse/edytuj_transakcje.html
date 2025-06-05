@@ -1,0 +1,60 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h2>✏️ Edytuj transakcję</h2>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.typ.id_for_label }}" class="form-label">Typ transakcji:</label>
+                                {{ form.typ }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.kwota.id_for_label }}" class="form-label">Kwota (zł):</label>
+                                {{ form.kwota }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="kategoria_input" class="form-label">Kategoria:</label>
+                        <input type="text"
+                               name="kategoria_nazwa"
+                               id="kategoria_input"
+                               class="form-control"
+                               list="kategorie_list"
+                               value="{{ current_category }}"
+                               placeholder="Wpisz kategorię">
+
+                        <datalist id="kategorie_list">
+                            {% for kategoria in existing_categories %}
+                                <option value="{{ kategoria }}">
+                            {% endfor %}
+                        </datalist>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.opis.id_for_label }}" class="form-label">Opis:</label>
+                        {{ form.opis }}
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{% url 'lista_transakcji' %}" class="btn btn-secondary">Anuluj</a>
+                        <button type="submit" class="btn btn-warning">💾 Zaktualizuj</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
