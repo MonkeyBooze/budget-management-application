@@ -52,7 +52,7 @@ def rejestracja(request):
             return redirect("login")
     else:
         form = UserCreationForm()
-    return render(request, "finanse/registration/rejestracja.html", {"form": form})
+    return render(request, "registration/rejestracja.html", {"form": form})
 
 
 @login_required()
